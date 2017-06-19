@@ -15,13 +15,28 @@ router.get("/", function(req, res){
 
 
 router.post('/', function(req, res, next) {
-  var page = Page.build({
-    title: req.body.title,
-    content: req.body.content,
-    status: req.body.status,
+  User.findOrCreate({
+    where: { 
+      name: req.body.authorName, 
+      email : req.body.email
+    }
+  })
+  .then(function(values){
+    var user = values[0];
+      var page = Page.build({
+      title: req.body.title,
+      content: req.body.content,
+      status: req.body.status,
+
   });
-  page.save()
-  .then(function(page){
+
+return page.save().then(function(page){
+  return page.setAuthor(user);
+});
+
+  })
+
+.then(function(page){
   	 res.redirect(page.route);
   })
   .catch(function(err){
