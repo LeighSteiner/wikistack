@@ -24,8 +24,22 @@ var Page = db.define('page', {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
     }
-  }, {getterMethods: {route: function(){return "route_made"} }
+  }, {getterMethods: {route: function(){
+  		
+
+  } ,
+
+}
 });
+
+Page.beforeValidate('generateUrlTitle', (page, options) => {
+	console.log('validation');
+	if (page.title){
+		page.urlTitle = title.replace(/\s+/g, '_').replace(/\W/g,'');
+	}else{
+		page.urlTitle = Math.random().toString(36).substring(2,7);
+	}
+})
 
 const User = db.define('user', {
    name: {
