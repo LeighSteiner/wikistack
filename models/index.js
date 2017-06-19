@@ -25,7 +25,7 @@ var Page = db.define('page', {
         defaultValue: Sequelize.NOW
     }
   }, {getterMethods: {route: function(){
-  		
+
 
   } ,
 
@@ -33,11 +33,10 @@ var Page = db.define('page', {
 });
 
 Page.beforeValidate('generateUrlTitle', (page, options) => {
-	console.log('validation');
 	if (page.title){
-		page.urlTitle = title.replace(/\s+/g, '_').replace(/\W/g,'');
+		page.urlTitle = page.title.replace(/\s+/g, '_').replace(/\W/g,'');
 	}else{
-		page.urlTitle = Math.random().toString(36).substring(2,7);
+    page.urlTitle = Math.random().toString(36).substring(2,7);
 	}
 })
 

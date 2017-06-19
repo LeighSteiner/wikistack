@@ -4,6 +4,10 @@ var router = express.Router();
 var models = require('../models');
 var Page = models.Page;
 var User = models.User;
+var Sequelize = require("sequelize")
+var db = new Sequelize('postgres://localhost:5432/wikistack' ,{
+  logging: false
+});
 
 router.get("/", function(req, res){
   res.redirect("/");
@@ -15,9 +19,7 @@ router.post('/', function(req, res, next) {
     title: req.body.title,
     content: req.body.content,
     status: req.body.status,
-    // urlTitle: 'WHATEVER'
   });
-  console.log(page.title);
   page.save()
   .then(function(){
   	 res.json(page);
@@ -25,17 +27,21 @@ router.post('/', function(req, res, next) {
   .catch(function(err){
   	console.log(err);
   })
-  // next();
- 
 })
 
-// router.post("/", function(req, res,){
-//   res.send("You submitted a page!");
-// });
+
 
 router.get("/add", function(req, res){
   res.render('addpage')
 });
+
+router.get('/:urlName', function(req, res, next){
+  Page.findOne({where: {urlTitle: req.params.urlName}})
+  .then(function(page){
+    res.render("wikipage", {page : page});
+  })
+  .catch(next)
+})
 
 
 

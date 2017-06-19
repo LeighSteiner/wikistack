@@ -25,10 +25,10 @@ app.use(bodyParser.json()); // would be for AJAX requests
 app.use(morgan('dev'));
 app.use("/", routes);
 
-models.db.sync({force: true})
+models.db.sync({force: false}) //false saves; true resets db
 .then(function(){
-	app.listen(3000,function(){
-	console.log('listening on port 3000...');
+	app.listen(3001,function(){
+	console.log('listening on port 3001...');
 	});
 })
 .catch(console.error);
