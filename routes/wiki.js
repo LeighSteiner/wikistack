@@ -21,8 +21,8 @@ router.post('/', function(req, res, next) {
     status: req.body.status,
   });
   page.save()
-  .then(function(){
-  	 res.json(page);
+  .then(function(page){
+  	 res.redirect(page.route);
   })
   .catch(function(err){
   	console.log(err);

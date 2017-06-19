@@ -23,13 +23,14 @@ var Page = db.define('page', {
     date: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
+    },
+    route: {
+      type: Sequelize.VIRTUAL,
+      get: function(){
+        return '/wiki/'+ this.getDataValue('urlTitle');
+      }
     }
-  }, {getterMethods: {route: function(){
-
-
-  } ,
-
-}
+  
 });
 
 Page.beforeValidate('generateUrlTitle', (page, options) => {
